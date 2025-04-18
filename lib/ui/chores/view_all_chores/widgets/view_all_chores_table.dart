@@ -1,80 +1,54 @@
-import 'package:chore_app/domain/repositories/chore_repository.dart';
 import 'package:chore_app/domain/models/chore_model.dart';
+import 'package:chore_app/ui/core/ui/widgets/delete_chore_popup.dart';
 import 'package:flutter/material.dart';
 
 class ViewAllChoresTable extends StatelessWidget {
-  ViewAllChoresTable({super.key});
+  final List<Chore> chores;
+  final Future<void> Function(int) onDelete;
 
-  final ChoreRepository _choreRepository = ChoreRepository();
+  const ViewAllChoresTable({
+    Key? key,
+    required this.chores,
+    required this.onDelete,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Chore>>(
-      future: _choreRepository.getAll(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-        if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        }
-
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No data available'));
-        }
-
-        final List<DataRow> rows =
-            snapshot.data!.map((chore) {
-              return DataRow(
-                cells: [
-                  DataCell(Text(chore.name)),
-                  DataCell(Text(chore.description)),
-                  DataCell(
-  Text(chore.dateCreated.toLocal().toString().split(' ')[0]),
-),
-                  DataCell(Text(chore.completed ? 'Completed' : 'Pending')),
-                ],
-              );
-            }).toList();
-
-        return DataTable(
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Name',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Description',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'DateCreated',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
-              ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Completed',
-                  style: TextStyle(fontStyle: FontStyle.italic),
-                ),
+   return DataTable(
+      columns: const <DataColumn>[
+        DataColumn(label: Text('Name')),
+        DataColumn(label: Text('Description')),
+        DataColumn(label: Text('Date Created')),
+        DataColumn(label: Text('Completed')),
+        DataColumn(label: Text('Actions')),
+      ],
+      rows: chores.map((chore) {
+        return DataRow(
+          cells: [
+            DataCell(Text(chore.name)),
+            DataCell(Text(chore.description)),
+            DataCell(Text(
+              // format the DateTime to 'YYYY‑MM‑DD'
+              chore.dateCreated.toLocal().toString().split(' ')[0],
+            )),
+            DataCell(Text(chore.completed ? '✅' : '❌')),
+            DataCell(
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (_) => DeleteChorePopup(
+                      choreName: chore.name,
+                      onDelete: () => onDelete(chore.id!),
+                    ),
+                  );
+                },
               ),
             ),
           ],
-          rows: rows,
         );
-      },
+      }).toList(),
     );
   }
 }
