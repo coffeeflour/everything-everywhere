@@ -30,8 +30,13 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
   Future<void> _deleteChore(int id) async {
     await _choreRepository.delete(id);
     await _loadChores();
-
   }
+
+  Future<void> _editChore(int id) async {
+    await _choreRepository.update);
+    await _loadChores();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,10 +44,7 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ViewAllChoresTable(
-        chores: _chores,
-        onDelete: _deleteChore,
-      ),
+      body: ViewAllChoresTable(chores: _chores, onDelete: _deleteChore, onEdit: _editChore(id)),
     );
   }
 }
