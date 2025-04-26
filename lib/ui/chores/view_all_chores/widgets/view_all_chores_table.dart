@@ -38,37 +38,20 @@ class ViewAllChoresTable extends StatelessWidget {
                   ),
                 ),
                 DataCell(Text(chore.completed ? '✅' : '❌')),
-                DataCell(
-                  IconButton(
-                    icon: const Icon(Icons.delete),
-                    onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder:
-                            (_) => DeleteChorePopup(
-                              choreName: chore.name,
-                              onDelete: () => onDelete(chore.id!),
-                            ),
-                      );
-                    },
-                  ),
-                ),
-                DataCell(
-                  IconButton(
-                    icon: const Icon(Icons.edit),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => EditChoreScreen(chore: chore),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
-            );
-          }).toList(),
+                 DataCell(Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => onEdit(chore.id!),
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => onDelete(chore.id!),
+              ),
+            ],
+          )),
+        ]);
+      }).toList(),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:chore_app/ui/chores/edit_chore/widgets/edit_chore_screen.dart';
 import 'package:chore_app/ui/chores/view_all_chores/widgets/view_all_chores_table.dart';
 import 'package:chore_app/domain/repositories/chore_repository.dart';
 import 'package:chore_app/domain/models/chore_model.dart';
@@ -33,8 +34,17 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
   }
 
   Future<void> _editChore(int id) async {
-    await _choreRepository.update);
-    await _loadChores();
+    final chore = _chores.firstWhere((c) => c.id == id);
+
+    final didEdit = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => EditChoreScreen(chore: chore),
+         ),
+    );
+
+    if(didEdit == true) {
+      await _loadChores();
+    }
   }
 
   @override
@@ -44,7 +54,7 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ViewAllChoresTable(chores: _chores, onDelete: _deleteChore, onEdit: _editChore(id)),
+      body: ViewAllChoresTable(chores: _chores, onDelete: _deleteChore, onEdit: _editChore),
     );
   }
 }
