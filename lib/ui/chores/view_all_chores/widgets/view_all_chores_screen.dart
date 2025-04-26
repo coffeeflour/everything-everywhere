@@ -54,7 +54,10 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ViewAllChoresTable(chores: _chores, onDelete: _deleteChore, onEdit: _editChore),
+      body: ViewAllChoresTable(
+        chores: _chores,
+       onDelete: _deleteChore,
+        onEdit: _editChore),
     );
   }
 }
