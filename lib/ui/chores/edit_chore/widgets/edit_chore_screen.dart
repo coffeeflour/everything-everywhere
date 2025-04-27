@@ -6,7 +6,8 @@ import 'package:chore_app/domain/repositories/chore_repository.dart';
 
 class EditChoreScreen extends StatefulWidget {
   final Chore chore;
-  const EditChoreScreen({Key? key, required this.chore}) : super(key: key);
+  const EditChoreScreen({Key? key, required this.chore})
+    : super(key: key);
 
   @override
   _EditChoreScreenState createState() => _EditChoreScreenState();

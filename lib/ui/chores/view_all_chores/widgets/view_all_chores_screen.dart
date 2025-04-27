@@ -1,4 +1,5 @@
 import 'package:chore_app/ui/chores/edit_chore/widgets/edit_chore_screen.dart';
+import 'package:chore_app/ui/chores/insert_chores/widgets/insert_chore_screen.dart';
 import 'package:chore_app/ui/chores/view_all_chores/widgets/view_all_chores_table.dart';
 import 'package:chore_app/domain/repositories/chore_repository.dart';
 import 'package:chore_app/domain/models/chore_model.dart';
@@ -28,6 +29,19 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
     setState(() {});
   }
 
+  Future<void> _createChore(Chore newChore) async {
+    
+    final didCreate = await Navigator.of(context).push<bool>(
+      MaterialPageRoute(
+        builder: (_) => InsertChoreScreen(chore: newChore),
+        ),
+    );
+
+    if(didCreate == true) {
+      await _loadChores();
+    }
+  }
+
   Future<void> _deleteChore(int id) async {
     await _choreRepository.delete(id);
     await _loadChores();
@@ -54,7 +68,7 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ViewAllChoresTable(chores: _chores, onDelete: _deleteChore, onEdit: _editChore),
+      body: ViewAllChoresTable(chores: _chores, onDelete: _deleteChore, onEdit: _editChore, onCreate: _createChore),
     );
   }
 }

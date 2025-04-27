@@ -1,18 +1,19 @@
-import 'package:chore_app/domain/models/chore_model.dart';
-import 'package:chore_app/ui/chores/edit_chore/widgets/edit_chore_screen.dart';
-import 'package:chore_app/ui/core/ui/widgets/delete_chore_popup.dart';
 import 'package:flutter/material.dart';
+
+import 'package:chore_app/domain/models/chore_model.dart';
 
 class ViewAllChoresTable extends StatelessWidget {
   final List<Chore> chores;
   final Future<void> Function(int) onDelete;
   final Future<void> Function(int) onEdit;
+  final Future<void> Function(Chore) onCreate;
 
   const ViewAllChoresTable({
     Key? key,
     required this.chores,
     required this.onDelete,
     required this.onEdit,
+    required this.onCreate,
   }) : super(key: key);
 
   @override
@@ -48,6 +49,11 @@ class ViewAllChoresTable extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 onPressed: () => onDelete(chore.id!),
               ),
+              IconButton(
+                onPressed: () => onCreate(chore),
+                icon: const Icon(Icons.add),
+                
+                )
             ],
           )),
         ]);
