@@ -3,6 +3,7 @@ import 'package:chore_app/ui/chores/insert_chores/widgets/insert_chore_screen.da
 import 'package:chore_app/ui/chores/view_all_chores/widgets/view_all_chores_table.dart';
 import 'package:chore_app/domain/repositories/chore_repository.dart';
 import 'package:chore_app/domain/models/chore_model.dart';
+import 'package:chore_app/ui/core/ui/widgets/insert_chore_button.dart';
 import 'package:flutter/material.dart';
 
 class ViewAllChoresScreen extends StatefulWidget {
@@ -68,7 +69,29 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: ViewAllChoresTable(chores: _chores, onDelete: _deleteChore, onEdit: _editChore, onCreate: _createChore),
-    );
-  }
+      body: Column(
+        children: [
+          Expanded(child: ViewAllChoresTable(
+            chores: _chores,
+            onDelete: _deleteChore, 
+            onEdit: _editChore, 
+            onCreate: _createChore,
+            ),
+          ),
+          Padding(padding: const EdgeInsets.all(16.0),
+          child: InsertChoreButton(
+            onCreate: _createChore, 
+            newChore: Chore(
+              id: 0,
+              name: '',
+              dateCreated: DateTime.now(),
+              description: '',
+              completed: false,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 }
