@@ -6,14 +6,12 @@ class ViewAllChoresTable extends StatelessWidget {
   final List<Chore> chores;
   final Future<void> Function(int) onDelete;
   final Future<void> Function(int) onEdit;
-  final Future<void> Function(Chore) onCreate;
 
   const ViewAllChoresTable({
     Key? key,
     required this.chores,
     required this.onDelete,
     required this.onEdit,
-    required this.onCreate,
   }) : super(key: key);
 
   @override
@@ -49,11 +47,6 @@ class ViewAllChoresTable extends StatelessWidget {
                 icon: const Icon(Icons.delete),
                 onPressed: () => onDelete(chore.id!),
               ),
-              IconButton(
-                onPressed: () => onCreate(chore),
-                icon: const Icon(Icons.add),
-                
-                )
             ],
           )),
         ]);

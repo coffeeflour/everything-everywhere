@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'package:chore_app/ui/chores/insert_chores/widgets/insert_chore_form.dart';
-import 'package:chore_app/domain/repositories/chore_repository.dart';
 import 'package:chore_app/domain/models/chore_model.dart';
 
+var logger = Logger();
+
 class InsertChoreScreen extends StatefulWidget {
-  final Chore chore;
-  const InsertChoreScreen({Key? key, required this.chore}) 
+  const InsertChoreScreen({Key? key}) 
     :super(key: key);
 
   @override
@@ -15,6 +16,20 @@ class InsertChoreScreen extends StatefulWidget {
 }
 
 class _InsertChoreScreenState extends State<InsertChoreScreen> {
+  late Chore _newChore;
+
+  @override
+  void initState() {
+    super.initState();
+    _newChore = Chore(
+      id: null,
+      name: '',
+      description: '',
+      dateCreated: DateTime.now(),
+      completed: false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,10 +37,11 @@ class _InsertChoreScreenState extends State<InsertChoreScreen> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: InsertChoreForm(
-          initial: widget.chore,
+          initial: _newChore,
           onSubmit: (newChore) async {
-            await ChoreRepository().insert(newChore);
-            Navigator.pop(context, true);
+            logger.t('Submitting chore and popping screen.');
+            logger.t('Chore submitted: ${newChore.name}');
+            Navigator.pop(context, newChore);
           },
         ),
       ),

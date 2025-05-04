@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'package:chore_app/domain/models/chore_model.dart';
+
+var logger = Logger();
 
 class InsertChoreForm extends StatefulWidget {
   final Chore initial;
   final Future<void> Function(Chore) onSubmit;
+
 
   const InsertChoreForm({Key? key, required this.initial, required this.onSubmit})
     :super(key: key);
@@ -18,8 +22,8 @@ class _InsertChoreFormState extends State<InsertChoreForm> {
   final TextEditingController _nameCtrl = TextEditingController();
   final TextEditingController _descCtrl = TextEditingController();
 
-  DateTime _date = DateTime.now();
-  bool _completed = false;
+  final DateTime _date = DateTime.now();
+  final bool _completed = false;
 
   @override
   void initState() {
@@ -33,16 +37,20 @@ class _InsertChoreFormState extends State<InsertChoreForm> {
     super.dispose();
   }
 
-  void _submit() {
-    if(!_formKey.currentState!.validate()) return;
-    final newChore = Chore(
-      name: _nameCtrl.text,
-      description: _descCtrl.text,
-      dateCreated: _date,
-      completed: _completed,
-    );
-    widget.onSubmit(newChore);
-  }
+Future<void> _submit() async {
+  logger.t('Submit Button Pressed...');
+  if (!_formKey.currentState!.validate()) return;
+
+  final newChore = Chore(
+    name: _nameCtrl.text,
+    description: _descCtrl.text,
+    dateCreated: _date,
+    completed: _completed,
+  );
+
+  await widget.onSubmit(newChore); 
+}
+
 
   @override
   Widget build(BuildContext context) {
