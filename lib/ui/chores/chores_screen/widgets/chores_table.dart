@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:chore_app/domain/models/chore_model.dart';
 
-class ViewAllChoresTable extends StatelessWidget {
+class ChoresTable extends StatelessWidget {
   final List<Chore> chores;
   final Future<void> Function(int) onDelete;
-  final Future<void> Function(int) onEdit;
+  final Future<void> Function(Chore) onEdit;
 
-  const ViewAllChoresTable({
+  const ChoresTable({
     Key? key,
     required this.chores,
     required this.onDelete,
@@ -41,7 +41,7 @@ class ViewAllChoresTable extends StatelessWidget {
             children: [
               IconButton(
                 icon: const Icon(Icons.edit),
-                onPressed: () => onEdit(chore.id!),
+                onPressed: () => onEdit(chore),
               ),
               IconButton(
                 icon: const Icon(Icons.delete),

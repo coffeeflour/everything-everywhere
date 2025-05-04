@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
-import '../../chores/view_all_chores/widgets/view_all_chores_screen.dart';
+import '../../chores/chores_screen/widgets/chores_screen.dart';
 
 var logger = Logger();
 
@@ -58,7 +58,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const ViewAllChoresScreen(title: 'All chores'),
+                  builder: (context) => const ChoreScreen(title: 'All chores'),
                 
                  ),
               );

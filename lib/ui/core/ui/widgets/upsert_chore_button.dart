@@ -3,9 +3,9 @@ import 'package:logger/logger.dart';
 
 var logger = Logger();
 
-class InsertChoreButton extends StatelessWidget{
+class UpsertChoreButton extends StatelessWidget{
     final Future<void> Function() onCreate;
-  const InsertChoreButton({required this.onCreate});
+  const UpsertChoreButton({required this.onCreate});
 
   @override
   Widget build(BuildContext context) {
