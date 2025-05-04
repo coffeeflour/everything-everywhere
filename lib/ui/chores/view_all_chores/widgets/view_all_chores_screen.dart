@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
@@ -5,9 +6,9 @@ import 'package:chore_app/domain/repositories/chore_repository.dart';
 import 'package:chore_app/ui/chores/edit_chore/widgets/edit_chore_screen.dart';
 import 'package:chore_app/ui/chores/insert_chores/widgets/insert_chore_screen.dart';
 import 'package:chore_app/ui/chores/view_all_chores/widgets/view_all_chores_table.dart';
-import 'package:chore_app/domain/repositories/chore_repository.dart';
 import 'package:chore_app/domain/models/chore_model.dart';
 import 'package:chore_app/ui/core/ui/widgets/insert_chore_button.dart';
+import 'package:chore_app/ui/core/ui/widgets/alert_popup.dart';
 
 var logger = Logger();
 
@@ -55,8 +56,20 @@ class _ViewAllChoresScreenState extends State<ViewAllChoresScreen> {
 
 
   Future<void> _deleteChore(int id) async {
+    final confirmed = await confirmDialog(
+      context: context,
+      title: 'Delete Chore',
+      message: 'Are you sure you want to delete this chore?',
+      confirmText: 'Delete',
+      cancelText: 'Cancel',
+      );
+
+      if(!confirmed) return;
+
     await _choreRepository.delete(id);
     await _loadChores();
+
+    logger.t('Deleted chore $id');
   }
 
   Future<void> _editChore(int id) async {
