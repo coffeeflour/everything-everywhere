@@ -67,6 +67,10 @@ Future<void> _submit() async {
                 decoration: const InputDecoration(labelText: 'Chore Name'),
                 validator: (value) => value!.isEmpty ? 'Required' : null,
               ),
+              TextFormField(
+                controller: _descCtrl,
+                decoration: const InputDecoration(labelText: 'Description'),
+              ),
               ElevatedButton(
                 onPressed: _submit,
                 child: const Text('Add Chore'),

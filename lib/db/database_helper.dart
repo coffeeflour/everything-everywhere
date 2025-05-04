@@ -44,7 +44,6 @@ class DatabaseHelper {
 
   Future<void> insert(String table, Map<String, dynamic> values) async {
     final Database db = await database;
-    print('database helper called');
 
     await db.insert(
       table,
