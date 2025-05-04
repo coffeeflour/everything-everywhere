@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../chores/view_all_chores/widgets/view_all_chores_screen.dart';
-import '../../chores/insert_chores/widgets/insert_chore_screen.dart';
+import 'package:logger/logger.dart';
 
+import '../../chores/view_all_chores/widgets/view_all_chores_screen.dart';
+
+var logger = Logger();
 
 class MyHomeScreen extends StatefulWidget {
   const MyHomeScreen({super.key, required this.title});
@@ -52,6 +54,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
+                logger.t('Navigating to Chores Page...');
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -61,18 +64,6 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               );
               },
               child: const Text('Go to Chores Page'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const InsertChoreScreen(title: 'Insert chores'),
-                
-                 ),
-              );
-              },
-              child: const Text('Insert Chores'),
             ),
         ],
         ),

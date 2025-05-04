@@ -1,7 +1,6 @@
-import 'package:chore_app/domain/models/chore_model.dart';
-import 'package:chore_app/ui/chores/edit_chore/widgets/edit_chore_screen.dart';
-import 'package:chore_app/ui/core/ui/widgets/delete_chore_popup.dart';
 import 'package:flutter/material.dart';
+
+import 'package:chore_app/domain/models/chore_model.dart';
 
 class ViewAllChoresTable extends StatelessWidget {
   final List<Chore> chores;

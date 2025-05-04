@@ -31,6 +31,12 @@ class DatabaseHelper {
         description TEXT,
         completed INTEGER NOT NULL
         )
+
+        INSERT INTO chores(name, dateCreated, description, completed)
+        VALUES
+        ('Walk dog', '2025-04-27T14:30:00.000', 'take the dog a short walk', 0),
+        ('Wash dishes', '2025-04-27T14:30:00.000', 'wash the dishes in the sink', 0),
+        ('Develop app', '2025-04-27T14:30:00.000', 'seed chores to database', 0);
       ''');
       },
     );

@@ -16,6 +16,7 @@ dependencies:
   sqflite: ^2.2.8+4 #for mobile
   sqflite_common_ffi: ^2.2.0 #desktop
   path: ^1.9.1
+  logger: ^2.5.0
 
 dev_dependencies:
   flutter_test:

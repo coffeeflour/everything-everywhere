@@ -14,7 +14,7 @@ class EditChoreForm extends StatefulWidget {
 }
 
 class _EditChoreFormState extends State<EditChoreForm> {
-  final _formKey = GlobalKey <FormState>();
+  final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameCtrl;
   late TextEditingController _descCtrl;
   late DateTime _date;
@@ -61,11 +61,11 @@ class _EditChoreFormState extends State<EditChoreForm> {
   }
 
   @override
-  Widget build(BuildContext ctx) {
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Edit Chore', style: Theme.of(ctx).textTheme.titleLarge),
+        Text('Edit Chore', style: Theme.of(context).textTheme.titleLarge),
         Form(
           key: _formKey,
           child: Column(
