@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreenAccent),
       ),
-      home: const MyHomeScreen(title: 'Chore App Home Page'),
+      home: const MyHomeScreen(title: 'Everything Everywhere'),
     );
   }
 }

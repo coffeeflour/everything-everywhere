@@ -91,21 +91,27 @@ class _ChoreScreenState extends State<ChoreScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Column(
+      body: Padding(padding: const EdgeInsets.all(16.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Expanded(child: ChoresTable(
-            chores: _chores,
-            onDelete: _deleteChore, 
-            onEdit: _editChore, 
+          Expanded(
+            child: ChoresTable(
+              chores: _chores,
+              onDelete: _deleteChore,
+              onEdit: _editChore,
+              ),
             ),
-          ),
-          Padding(padding: const EdgeInsets.all(16.0),
-          child: UpsertChoreButton(
-            onCreate: _createChore
-          ),
-        ),
-      ],
-    ),
-  );
+
+            SizedBox(width: 16),
+
+       
+            UpsertChoreButton(
+              onCreate: _createChore
+            ),
+        ],
+      ),
+      ),
+    );
 }
 }
