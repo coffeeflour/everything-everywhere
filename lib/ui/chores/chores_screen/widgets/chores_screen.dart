@@ -47,8 +47,8 @@ class _ChoreScreenState extends State<ChoreScreen> {
 
     if (newChore != null) {
       logger.t('Chore returned: ${newChore.name}');
-      await _choreRepository.insert(newChore); // insert logic is here
-      await _loadChores(); // refresh table
+      await _choreRepository.insert(newChore);
+      await _loadChores();
     }
   }
 
@@ -84,6 +84,23 @@ class _ChoreScreenState extends State<ChoreScreen> {
     }
   }
 
+  Future<void> _toggleChoreCompleted(Chore chore, bool isChecked) async {
+   
+    Chore updatedChore = Chore(
+      id: chore.id,
+      name: chore.name,
+      description: chore.description,
+      completed: isChecked,
+      dateCreated: chore.dateCreated 
+    );
+
+      await _choreRepository.update(updatedChore);
+      await _loadChores();
+    
+    logger.t('Updated Chore ${updatedChore.id} to ${updatedChore.completed}');
+}
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -100,6 +117,7 @@ class _ChoreScreenState extends State<ChoreScreen> {
               chores: _chores,
               onDelete: _deleteChore,
               onEdit: _editChore,
+              onToggleCompleted: _toggleChoreCompleted,
               ),
             ),
 

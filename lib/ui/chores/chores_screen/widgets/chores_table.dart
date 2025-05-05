@@ -6,12 +6,15 @@ class ChoresTable extends StatelessWidget {
   final List<Chore> chores;
   final Future<void> Function(int) onDelete;
   final Future<void> Function(Chore) onEdit;
+  final void Function(Chore chore, bool isChecked) onToggleCompleted;
+
 
   const ChoresTable({
     Key? key,
     required this.chores,
     required this.onDelete,
     required this.onEdit,
+    required this.onToggleCompleted
   }) : super(key: key);
 
   @override
@@ -36,7 +39,15 @@ class ChoresTable extends StatelessWidget {
                     chore.dateCreated.toLocal().toString().split(' ')[0],
                   ),
                 ),
-                DataCell(Text(chore.completed ? '✅' : '❌')),
+                DataCell(Checkbox(
+                  value: chore.completed,
+                  onChanged: (bool? newValue){
+                    if (newValue != null) {
+                      onToggleCompleted(chore, newValue);
+                    }
+                  },
+                ),
+              ),
                  DataCell(Row(
             children: [
               IconButton(
