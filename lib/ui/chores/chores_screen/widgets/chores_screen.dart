@@ -103,32 +103,54 @@ class _ChoreScreenState extends State<ChoreScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+  final incompleteChores = _chores.where((chore) => !chore.completed).toList();
+  final completedChores = _chores.where((chore) => chore.completed).toList();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
       body: Padding(padding: const EdgeInsets.all(16.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Column(
         children: [
-          Expanded(
-            child: ChoresTable(
-              chores: _chores,
-              onDelete: _deleteChore,
-              onEdit: _editChore,
-              onToggleCompleted: _toggleChoreCompleted,
-              ),
-            ),
-
-            SizedBox(width: 16),
-
-       
-            UpsertChoreButton(
-              onCreate: _createChore
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: ChoresTable(
+                  chores: incompleteChores,
+                  onDelete: _deleteChore,
+                  onEdit: _editChore,
+                  onToggleCompleted: _toggleChoreCompleted,
+                  ),
+                ),
+               
+                SizedBox(width: 16),
+          
+           
+                UpsertChoreButton(
+                  onCreate: _createChore
+                ),
+            ],
+          ),
+          Row(
+            children: [
+                Expanded(
+                  child: ChoresTable(
+                    chores: completedChores,
+                    onDelete: _deleteChore,
+                    onEdit: _editChore,
+                    onToggleCompleted: _toggleChoreCompleted,
+                  ),
+                ),
+            ],
+          
+          ),
         ],
       ),
+      
       ),
     );
 }

@@ -19,7 +19,8 @@ class ChoresTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DataTable(
+    return SingleChildScrollView(
+      child: DataTable(
       columns: const <DataColumn>[
         DataColumn(label: Text('Name')),
         DataColumn(label: Text('Description')),
@@ -62,6 +63,7 @@ class ChoresTable extends StatelessWidget {
           )),
         ]);
       }).toList(),
+      ),
     );
   }
 }
