@@ -22,6 +22,7 @@ class ChoreScreen extends StatefulWidget {
 class _ChoreScreenState extends State<ChoreScreen> {
   final ChoreRepository _choreRepository = ChoreRepository();
   List<Chore> _chores = [];
+  bool _customTileExpanded = false;
 
   @override
   void initState() {
@@ -47,8 +48,8 @@ class _ChoreScreenState extends State<ChoreScreen> {
 
     if (newChore != null) {
       logger.t('Chore returned: ${newChore.name}');
-      await _choreRepository.insert(newChore); // insert logic is here
-      await _loadChores(); // refresh table
+      await _choreRepository.insert(newChore);
+      await _loadChores();
     }
   }
 
@@ -84,34 +85,91 @@ class _ChoreScreenState extends State<ChoreScreen> {
     }
   }
 
+  Future<void> _toggleChoreCompleted(Chore chore, bool isChecked) async {
+   
+    Chore updatedChore = Chore(
+      id: chore.id,
+      name: chore.name,
+      description: chore.description,
+      completed: isChecked,
+      dateCreated: chore.dateCreated 
+    );
+
+      await _choreRepository.update(updatedChore);
+      await _loadChores();
+    
+    logger.t('Updated Chore ${updatedChore.id} to ${updatedChore.completed}');
+}
+
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Padding(padding: const EdgeInsets.all(16.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: ChoresTable(
-              chores: _chores,
-              onDelete: _deleteChore,
-              onEdit: _editChore,
+
+  final incompleteChores = _chores.where((chore) => !chore.completed).toList();
+  final completedChores = _chores.where((chore) => chore.completed).toList();
+
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      title: Text(widget.title),
+    ),
+    body: Padding(padding: const EdgeInsets.all(16.0),
+    child: Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              width: 1000.0,
+              child: ExpansionTile(
+                title: Text('Chores'),
+                trailing: Icon(
+                  _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                ),
+                children: [
+                  ChoresTable(
+                    chores: incompleteChores,
+                    onDelete: _deleteChore,
+                    onEdit: _editChore,
+                    onToggleCompleted: _toggleChoreCompleted,
+                  ),
+                ],
               ),
             ),
-
+               
             SizedBox(width: 16),
-
-       
+          
             UpsertChoreButton(
               onCreate: _createChore
             ),
-        ],
-      ),
-      ),
-    );
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              width: 1000.0,
+              child: ExpansionTile(
+                title: Text('Completed Chores'),
+                trailing: Icon(
+                _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                ),
+                children: [
+                  ChoresTable(
+                    chores: completedChores,
+                    onDelete: _deleteChore,
+                    onEdit: _editChore,
+                    onToggleCompleted: _toggleChoreCompleted,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  ),
+  );
 }
 }
