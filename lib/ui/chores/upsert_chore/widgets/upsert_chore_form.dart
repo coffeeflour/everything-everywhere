@@ -1,22 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'package:chore_app/domain/models/chore_model.dart';
 
-class EditChoreForm extends StatefulWidget {
+var logger = Logger();
+
+class UpsertChoreForm extends StatefulWidget {
   final Chore initial;
   final Future<void> Function(Chore) onSubmit;
+  final String submitButtonText;
 
-  const EditChoreForm({Key? key, required this.initial, required this.onSubmit})
-    : super(key: key);
+
+  const UpsertChoreForm({
+    Key? key,
+    required this.initial,
+    required this.onSubmit,
+    this.submitButtonText = 'Save',
+    })
+    :super(key: key);
 
   @override
-  _EditChoreFormState createState() => _EditChoreFormState();
+  _UpsertChoreFormState createState() => _UpsertChoreFormState();
 }
 
-class _EditChoreFormState extends State<EditChoreForm> {
+class _UpsertChoreFormState extends State<UpsertChoreForm> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _nameCtrl;
   late TextEditingController _descCtrl;
+
   late DateTime _date;
   late bool _completed;
 
@@ -36,36 +47,28 @@ class _EditChoreFormState extends State<EditChoreForm> {
     super.dispose();
   }
 
-  Future<void> _pickDate() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: _date,
-      firstDate: DateTime(2000),
-      lastDate: DateTime(2100),
-    );
-    if (picked != null) {
-      setState(() => _date = picked);
-    }
-  }
+Future<void> _submit() async {
+  logger.t('Submit Button Pressed...');
+  if (!_formKey.currentState!.validate()) return;
 
-  void _submit() {
-    if (!_formKey.currentState!.validate()) return;
-    final updated = Chore(
-      id: widget.initial.id,
-      name: _nameCtrl.text,
-      description: _descCtrl.text,
-      dateCreated: _date,
-      completed: _completed,
-    );
-    widget.onSubmit(updated);
-  }
+  final updated = Chore(
+    id: widget.initial.id,
+    name: _nameCtrl.text.trim(),
+    description: _descCtrl.text.trim(),
+    dateCreated: _date,
+    completed: _completed,
+  );
+
+  await widget.onSubmit(updated); 
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Edit Chore', style: Theme.of(context).textTheme.titleLarge),
+        Text('Add/Edit Chore', style: Theme.of(context).textTheme.titleLarge),
         Form(
           key: _formKey,
           child: Column(
@@ -73,21 +76,19 @@ class _EditChoreFormState extends State<EditChoreForm> {
               TextFormField(
                 controller: _nameCtrl,
                 decoration: const InputDecoration(labelText: 'Chore Name'),
-                validator: (v) => v!.isEmpty ? 'Required' : null,
+                validator: (value) => value!.isEmpty ? 'Name Required' : null,
               ),
               TextFormField(
                 controller: _descCtrl,
                 decoration: const InputDecoration(labelText: 'Description'),
-                validator: (v) => v!.isEmpty ? 'Required' : null,
               ),
-              // … date picker & checkbox …
               ElevatedButton(
                 onPressed: _submit,
-                child: const Text('Save Changes'),
-              ),
+                child: Text(widget.submitButtonText),
+                ),
             ],
           ),
-        ),
+        )
       ],
     );
   }
