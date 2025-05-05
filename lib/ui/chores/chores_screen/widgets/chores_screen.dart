@@ -22,6 +22,7 @@ class ChoreScreen extends StatefulWidget {
 class _ChoreScreenState extends State<ChoreScreen> {
   final ChoreRepository _choreRepository = ChoreRepository();
   List<Chore> _chores = [];
+  bool _customTileExpanded = false;
 
   @override
   void initState() {
@@ -107,51 +108,68 @@ class _ChoreScreenState extends State<ChoreScreen> {
   final incompleteChores = _chores.where((chore) => !chore.completed).toList();
   final completedChores = _chores.where((chore) => chore.completed).toList();
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-      ),
-      body: Padding(padding: const EdgeInsets.all(16.0),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: ChoresTable(
-                  chores: incompleteChores,
-                  onDelete: _deleteChore,
-                  onEdit: _editChore,
-                  onToggleCompleted: _toggleChoreCompleted,
+  return Scaffold(
+    appBar: AppBar(
+      backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+      title: Text(widget.title),
+    ),
+    body: Padding(padding: const EdgeInsets.all(16.0),
+    child: Column(
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              width: 1000.0,
+              child: ExpansionTile(
+                title: Text('Chores'),
+                trailing: Icon(
+                  _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                ),
+                children: [
+                  ChoresTable(
+                    chores: incompleteChores,
+                    onDelete: _deleteChore,
+                    onEdit: _editChore,
+                    onToggleCompleted: _toggleChoreCompleted,
                   ),
-                ),
+                ],
+              ),
+            ),
                
-                SizedBox(width: 16),
+            SizedBox(width: 16),
           
-           
-                UpsertChoreButton(
-                  onCreate: _createChore
+            UpsertChoreButton(
+              onCreate: _createChore
+            ),
+          ],
+        ),
+        Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.all(10.0),
+              width: 1000.0,
+              child: ExpansionTile(
+                title: Text('Completed Chores'),
+                trailing: Icon(
+                _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
                 ),
-            ],
-          ),
-          Row(
-            children: [
-                Expanded(
-                  child: ChoresTable(
+                children: [
+                  ChoresTable(
                     chores: completedChores,
                     onDelete: _deleteChore,
                     onEdit: _editChore,
                     onToggleCompleted: _toggleChoreCompleted,
                   ),
-                ),
-            ],
-          
-          ),
-        ],
-      ),
-      
-      ),
-    );
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  ),
+  );
 }
 }
