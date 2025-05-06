@@ -81,7 +81,7 @@ class _ChoreScreenState extends State<ChoreScreen> {
     if(updatedChore != null) {
       await _choreRepository.update(updatedChore);
       await _loadChores();
-      logger.t('Chore $updatedChore.id_ updated');
+      logger.t('Chore ${updatedChore.id} updated');
     }
   }
 
@@ -122,19 +122,30 @@ class _ChoreScreenState extends State<ChoreScreen> {
             Container(
               margin: const EdgeInsets.all(10.0),
               width: 1000.0,
-              child: ExpansionTile(
-                title: Text('Chores'),
-                trailing: Icon(
-                  _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
-                ),
-                children: [
-                  ChoresTable(
-                    chores: incompleteChores,
-                    onDelete: _deleteChore,
-                    onEdit: _editChore,
-                    onToggleCompleted: _toggleChoreCompleted,
+              child: Card(
+                child: Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    title: Text('Chores'),
+                    trailing: Icon(
+                      _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                    ),
+                    children: [
+                        SizedBox(
+                          height: 300.0,
+                          width: 1200.0,
+                          child: SingleChildScrollView(
+                            child: ChoresTable(
+                              chores: incompleteChores,
+                              onDelete: _deleteChore,
+                              onEdit: _editChore,
+                              onToggleCompleted: _toggleChoreCompleted,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
                
@@ -150,19 +161,30 @@ class _ChoreScreenState extends State<ChoreScreen> {
             Container(
               margin: const EdgeInsets.all(10.0),
               width: 1000.0,
-              child: ExpansionTile(
-                title: Text('Completed Chores'),
-                trailing: Icon(
-                _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
-                ),
-                children: [
-                  ChoresTable(
-                    chores: completedChores,
-                    onDelete: _deleteChore,
-                    onEdit: _editChore,
-                    onToggleCompleted: _toggleChoreCompleted,
+              child: Card(
+                child: Theme(
+                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  child: ExpansionTile(
+                    title: Text('Completed Chores'),
+                    trailing: Icon(
+                    _customTileExpanded ? Icons.arrow_drop_down_circle : Icons.arrow_drop_down,
+                    ),
+                    children: [
+                      SizedBox(
+                        height: 150.0,
+                        width: 1200.0,
+                        child: SingleChildScrollView(
+                            child: ChoresTable(
+                              chores: completedChores,
+                              onDelete: _deleteChore,
+                              onEdit: _editChore,
+                              onToggleCompleted: _toggleChoreCompleted,
+                            ),
+                          ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
           ],

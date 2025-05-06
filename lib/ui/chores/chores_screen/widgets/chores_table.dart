@@ -19,8 +19,7 @@ class ChoresTable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: DataTable(
+    return DataTable(
       columns: const <DataColumn>[
         DataColumn(label: Text('Completed')),
         DataColumn(label: Text('Name')),
@@ -33,6 +32,7 @@ class ChoresTable extends StatelessWidget {
             return DataRow(
               cells: [ 
                 DataCell(Checkbox(
+                  shape: CircleBorder(),
                   value: chore.completed,
                   onChanged: (bool? newValue){
                     if (newValue != null) {
@@ -41,30 +41,52 @@ class ChoresTable extends StatelessWidget {
                   },
                 ),
               ),
-              DataCell(Text(chore.name)),
-              DataCell(Text(chore.description)),
               DataCell(
-                Text(
-                  // format the DateTime to 'YYYY‑MM‑DD'
-                  chore.dateCreated.toLocal().toString().split(' ')[0],
+                SizedBox(
+                  width: 250,
+                  child: Text(
+                    chore.name,
+                    softWrap: true,
+                  ),
                 ),
               ),
-
-            DataCell(Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.edit),
-                onPressed: () => onEdit(chore),
+              DataCell(
+                SizedBox(
+                width: 250,
+                child: Text(
+                  chore.description,
+                  softWrap: true,
+                  ),
+                ),
               ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () => onDelete(chore.id!),
+              DataCell(
+                SizedBox(
+                  width: 100,
+                  child: Text(
+                    // format the DateTime to 'YYYY‑MM‑DD'
+                    chore.dateCreated.toLocal().toString().split(' ')[0],
+                    softWrap: true,
+                  ),
+                ),
               ),
-            ],
-          )),
-        ]);
-      }).toList(),
-      ),
-    );
-  }
+              DataCell(
+                Center(
+                  child: Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit),
+                        onPressed: () => onEdit(chore),
+                      ),
+                      IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () => onDelete(chore.id!),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ]);
+          }).toList(),
+        );
+      }
 }

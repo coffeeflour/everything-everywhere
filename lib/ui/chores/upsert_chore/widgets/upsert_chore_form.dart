@@ -68,7 +68,6 @@ Future<void> _submit() async {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text('Add/Edit Chore', style: Theme.of(context).textTheme.titleLarge),
         Form(
           key: _formKey,
           child: Column(
