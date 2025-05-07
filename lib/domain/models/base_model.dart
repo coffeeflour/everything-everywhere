@@ -1,8 +1,12 @@
 abstract class BaseModel {
   
   final int? id;
+  final String name;
 
-  BaseModel({this.id});
+  BaseModel({
+    this.id,
+    required this.name
+  });
 
   /// Convert the model into a Map for database operations.
   Map<String, dynamic> toMap();
