@@ -1,5 +1,3 @@
-
-
 import 'package:chore_app/domain/models/chore_model.dart';
 import 'package:chore_app/domain/repositories/base_repository.dart';
 

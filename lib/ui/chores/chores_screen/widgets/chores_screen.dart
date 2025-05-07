@@ -1,10 +1,13 @@
+
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 
 import 'package:chore_app/domain/repositories/chore_repository.dart';
+import 'package:chore_app/domain/repositories/status_repository.dart';
 import 'package:chore_app/ui/chores/upsert_chore/widgets/upsert_chore_screen.dart';
 import 'package:chore_app/ui/chores/chores_screen/widgets/chores_table.dart';
 import 'package:chore_app/domain/models/chore_model.dart';
+import 'package:chore_app/domain/models/status_model.dart';
 import 'package:chore_app/ui/core/ui/widgets/upsert_chore_button.dart';
 import 'package:chore_app/ui/core/ui/widgets/alert_popup.dart';
 
@@ -21,13 +24,16 @@ class ChoreScreen extends StatefulWidget {
 
 class _ChoreScreenState extends State<ChoreScreen> {
   final ChoreRepository _choreRepository = ChoreRepository();
+  final StatusRepository _statusRepository = StatusRepository();
   List<Chore> _chores = [];
+  List<Status> _statuses = [];
   bool _customTileExpanded = false;
 
   @override
   void initState() {
     super.initState();
     _loadChores();
+    _loadStatuses();
   }
 
   Future<void> _loadChores() async {
@@ -35,6 +41,15 @@ class _ChoreScreenState extends State<ChoreScreen> {
     logger.t('Loading Chores...');
     _chores = await _choreRepository.getAll();
     logger.t('Chores Loaded.');
+
+    setState(() {});
+  }
+
+  Future<void> _loadStatuses() async {
+
+    logger.t('Loading Statuses...');
+    _statuses = await _statusRepository.getAll();
+    logger.t('Statuses Loaded.');
 
     setState(() {});
   }
@@ -86,19 +101,34 @@ class _ChoreScreenState extends State<ChoreScreen> {
   }
 
   Future<void> _toggleChoreCompleted(Chore chore, bool isChecked) async {
-   
-    Chore updatedChore = Chore(
+    Chore updatedChore;
+    if(isChecked){
+      updatedChore = Chore(
       id: chore.id,
       name: chore.name,
       description: chore.description,
       completed: isChecked,
-      dateCreated: chore.dateCreated 
+      dateCreated: chore.dateCreated,
+      dueDate: chore.dueDate,
+      status: 'Completed',
     );
+    } else {
+        updatedChore = Chore(
+        id: chore.id,
+        name: chore.name,
+        description: chore.description,
+        completed: isChecked,
+        dateCreated: chore.dateCreated,
+        dueDate: chore.dueDate,
+        status: ''
+        );
+    }
 
-      await _choreRepository.update(updatedChore);
-      await _loadChores();
+    await _choreRepository.update(updatedChore);
+    await _loadChores();
     
     logger.t('Updated Chore ${updatedChore.id} to ${updatedChore.completed}');
+
 }
 
 
@@ -137,6 +167,7 @@ class _ChoreScreenState extends State<ChoreScreen> {
                           child: SingleChildScrollView(
                             child: ChoresTable(
                               chores: incompleteChores,
+                              statuses: _statuses,
                               onDelete: _deleteChore,
                               onEdit: _editChore,
                               onToggleCompleted: _toggleChoreCompleted,
@@ -176,6 +207,7 @@ class _ChoreScreenState extends State<ChoreScreen> {
                         child: SingleChildScrollView(
                             child: ChoresTable(
                               chores: completedChores,
+                              statuses: _statuses,
                               onDelete: _deleteChore,
                               onEdit: _editChore,
                               onToggleCompleted: _toggleChoreCompleted,
